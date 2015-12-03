@@ -19,6 +19,9 @@ ring *newRing();
 // Adds a node with item x to the ring r.
 void addNode(ring *r, item x);
 
+// Removes the current node from the ring r.
+void removeNode(ring *r);
+
 // Gets the item at the current position in the ring.
 item get(ring *r);
 

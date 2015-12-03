@@ -12,7 +12,6 @@ typedef struct node node;
 struct ring{
     node *sentinel;
     node *current;
-    node *free;
 };
 
 node *makeSentinel(){
@@ -26,21 +25,26 @@ ring *newRing(){
     ring *r = malloc(sizeof(ring));
     r->sentinel = makeSentinel();
     r->current = r->sentinel;
-    r->free = NULL;
     return r;
 }
 
 void addNode(ring *r, item x){
-    node *new;
-    if (r->free != NULL){
-        new = r->free;
-        r->free = new->next;
-    }
-    else new = malloc(sizeof(node));
+    node *new = malloc(sizeof(node));
     new->x = x;
     new->next = r->current;
     new->prev = r->current->prev;
     r->current->prev = new;
+}
+
+void removeNode(ring *r){
+    node *newCurrent;
+    node *newNext;
+    newCurrent = r->current->prev;
+    newNext = r->current->next;
+    newCurrent->next = newNext;
+    newNext->prev = newCurrent;
+    free(r->current);
+    r->current = newCurrent;
 }
 
 item get(ring *r){
