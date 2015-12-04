@@ -10,6 +10,14 @@ void printList(ring *r){
     }
 }
 
-int main(){
+void addNumbers(ring *r, int x){
+    for(int i = 0; i < x; i++){
+        addItem(r, i);
+    }
+}
 
+int main(){
+    ring *r = newRing();
+    addNumbers(r, 10);
+    printList(r);    
 }

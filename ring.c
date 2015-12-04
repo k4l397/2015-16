@@ -36,6 +36,10 @@ void addNode(ring *r, item x){
     r->current->prev = new;
 }
 
+void addItem(ring *r, item x){
+    addNode(r, x);
+}
+
 void removeNode(ring *r){
     node *newCurrent;
     node *newNext;
@@ -45,6 +49,10 @@ void removeNode(ring *r){
     newNext->prev = newCurrent;
     free(r->current);
     r->current = newCurrent;
+}
+
+void removeItem(ring *r){
+    removeNode(r);
 }
 
 item get(ring *r){

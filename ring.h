@@ -3,8 +3,8 @@
 // Change this to change the type of the item used in the ring. Uncommment and
 // adapt the following for doubles, ints, fixed size strings, variable strings
 // as pointers, structures, or pointers to structures.
-typedef double item;
-// typedef int item;
+// typedef double item;
+typedef int item;
 // typedef char *item;
 // typedef struct x item;
 // typedef struct x *item;
@@ -13,14 +13,14 @@ typedef double item;
 struct ring;
 typedef struct ring ring;
 
-// When called, returns a new ring with just a sentinel node.
+// When called, returns a new ring.
 ring *newRing();
 
-// Adds a node with item x to the ring r.
-void addNode(ring *r, item x);
+// Adds an item x to the ring r before the current position.
+void addItem(ring *r, item x);
 
-// Removes the current node from the ring r.
-void removeNode(ring *r);
+// Remove current item from list.
+void removeItem(ring *r);
 
 // Gets the item at the current position in the ring.
 item get(ring *r);
