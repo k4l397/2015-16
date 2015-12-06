@@ -19,5 +19,5 @@ void addNumbers(ring *r, int x){
 int main(){
     ring *r = newRing();
     addNumbers(r, 10);
-    printList(r);    
+    printList(r);
 }
