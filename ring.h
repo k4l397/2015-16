@@ -1,13 +1,11 @@
 #include <stdbool.h>
 
-// Change this to change the type of the item used in the ring. Uncommment and
-// adapt the following for doubles, ints, fixed size strings, variable strings
-// as pointers, structures, or pointers to structures.
-// typedef double item;
-typedef int item;
-// typedef char *item;
-// typedef struct x item;
-// typedef struct x *item;
+// Defines what is included in an item.
+struct object{
+    int start, size;
+    bool used;
+}
+typedef struct object item;
 
 // The type of a ring.
 struct ring;
@@ -19,17 +17,17 @@ ring *newRing();
 // Adds an item x to the ring r before the current position.
 void addItem(ring *r, item x);
 
-// Remove current item from list.
+// Remove current item from list. Moves current pointer back to previous item.
 void removeItem(ring *r);
 
 // Gets the item at the current position in the ring.
 item get(ring *r);
 
-// Moves the current position to the start of the ring.
+// Moves the current pointer to the start of the ring.
 void start(ring *r);
 
-// Moves the current position to the next item in the ring.
+// Moves the current pointer to the next item in the ring.
 void next(ring *r);
 
-// Test if the current position is at the end of the ring.
+// Test if the current pointer is pointing to end of the ring.
 bool end(ring *r);

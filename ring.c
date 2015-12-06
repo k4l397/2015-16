@@ -9,6 +9,11 @@ struct node{
 };
 typedef struct node node;
 
+static void fail(char *msg) {
+    fprintf(stderr, "Error: %s\n", msg);
+    exit (1);
+}
+
 struct ring{
     node *sentinel;
     node *current;
@@ -38,7 +43,7 @@ void addItem(ring *r, item x){
 }
 
 void removeItem(ring *r){
-    if(r->current != r->sentinel){
+    if(r->current == r->sentinel) fail("Cannot delete the sentinel");
         node *newCurrent;
         node *newNext;
         newCurrent = r->current->prev;
@@ -47,7 +52,6 @@ void removeItem(ring *r){
         newNext->prev = newCurrent;
         free(r->current);
         r->current = newCurrent;
-    }
 }
 
 item getItem(node *n){
@@ -55,6 +59,7 @@ item getItem(node *n){
 }
 
 item get(ring *r){
+    if(r->current == r->sentinel) fail("No item in the sentinel");
     return getItem(r->current);
 }
 
