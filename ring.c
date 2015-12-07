@@ -11,7 +11,7 @@ typedef struct node node;
 
 static void fail(char *msg) {
     fprintf(stderr, "Error: %s\n", msg);
-    exit (1);
+    exit(1);
 }
 
 struct ring{
@@ -36,22 +36,19 @@ ring *newRing(){
 void addItem(ring *r, item x){
     node *new = malloc(sizeof(node));
     new->x = x;
-    new->next = r->current;
-    new->prev = r->current->prev;
-    r->current->prev->next = new;
-    r->current->prev = new;
+    new->next = r->current->next;
+    new->prev = r->current;
+    r->current->next = new;
 }
 
 void removeItem(ring *r){
     if(r->current == r->sentinel) fail("Cannot delete the sentinel");
-        node *newCurrent;
-        node *newNext;
-        newCurrent = r->current->prev;
-        newNext = r->current->next;
-        newCurrent->next = newNext;
-        newNext->prev = newCurrent;
-        free(r->current);
-        r->current = newCurrent;
+    node *newCurrent = r->current->prev;
+    node *newNext = r->current->next;
+    newCurrent->next = newNext;
+    newNext->prev = newCurrent;
+    free(r->current);
+    r->current = newCurrent;
 }
 
 item getItem(node *n){

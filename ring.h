@@ -2,9 +2,9 @@
 
 // Defines what is included in an item.
 struct object{
-    int start, size;
+    int index, size;
     bool used;
-}
+};
 typedef struct object item;
 
 // The type of a ring.
@@ -14,7 +14,7 @@ typedef struct ring ring;
 // When called, returns a new ring.
 ring *newRing();
 
-// Adds an item x to the ring r before the current position.
+// Adds an item x to the ring r after the current position.
 void addItem(ring *r, item x);
 
 // Remove current item from list. Moves current pointer back to previous item.
