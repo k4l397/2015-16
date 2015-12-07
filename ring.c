@@ -38,6 +38,7 @@ void addItem(ring *r, item x){
     new->x = x;
     new->next = r->current->next;
     new->prev = r->current;
+    r->current->next->prev = new;
     r->current->next = new;
 }
 

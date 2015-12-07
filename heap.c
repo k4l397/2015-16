@@ -17,16 +17,24 @@ void allocSpace(ring *r, int size, int index){
 
 // Joins together the gaps of current gap and next or previous gap
 // if nextOrPrev == 0 then next, if nextOrPrev == 1 then previous
-//TODO: Look at this later, possibly free space
 void joinGaps(ring *r, int nextOrPrev){
     int totalSize = get(r).size;
-    if(nextOrPrev == 0) next(r);
-    else prev(r);
-    totalSize = totalSize + get(r).size;
-    removeItem(r);
-    removeItem(r);
+    if(nextOrPrev == 0) {
+        next(r);
+        totalSize = totalSize + get(r).size;
+        removeItem(r);
+        removeItem(r);
+    }
+    else {
+        prev(r);
+        totalSize = totalSize + get(r).size;
+        removeItem(r);
+        next(r);
+        removeItem(r);
+    }
     item newGap = {-1, totalSize, false};
     addItem(r, newGap);
+    next(r);
 }
 
 // Free's space at the current position in the ring
@@ -34,8 +42,8 @@ void joinGaps(ring *r, int nextOrPrev){
 void freeSpace(ring *r){
     item current = get(r);
     current.used = false;
-    removeItem(r);
     addItem(r, current);
+    removeItem(r);
     if(get(r).used == false){
         next(r);
         joinGaps(r, 1);
@@ -99,7 +107,9 @@ void printRing(ring *r){
     }
 }
 
-//TODO: Some function that will interpret a call
+//TODO:
+// - Interpret call function that will return operation code 0 or 1
+// args of index and size.
 
 int main(int argc, char *argv[]){
     ring *heap = newRing();
