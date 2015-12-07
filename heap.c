@@ -15,6 +15,41 @@ void allocSpace(ring *r, int size, int index){
     if(newGap.size > 0) addItem(r, newGap);
 }
 
+// Joins together the gaps of current gap and next or previous gap
+// if nextOrPrev == 0 then next, if nextOrPrev == 1 then previous
+//TODO: Look at this later, possibly free space
+void joinGaps(ring *r, int nextOrPrev){
+    int totalSize = get(r).size;
+    if(nextOrPrev == 0) next(r);
+    else prev(r);
+    totalSize = totalSize + get(r).size;
+    removeItem(r);
+    removeItem(r);
+    item newGap = {-1, totalSize, false};
+    addItem(r, newGap);
+}
+
+// Free's space at the current position in the ring
+// Joins gap together if necessery
+void freeSpace(ring *r){
+    item current = get(r);
+    current.used = false;
+    removeItem(r);
+    addItem(r, current);
+    if(get(r).used == false){
+        next(r);
+        joinGaps(r, 1);
+    }
+    else{
+        next(r);
+    }
+    next(r);
+    if(get(r).used == false){
+        prev(r);
+        joinGaps(r, 0);
+    }
+}
+
 // Searches for gap large enough. Returns true if gap found, false otherwise.
 // Sets current item in ring to the gap.
 bool searchGap(ring *r, int size){
@@ -22,7 +57,20 @@ bool searchGap(ring *r, int size){
     item current;
     while(end(r) != true){
         current = get(r);
-        if(size <= current.size) return true;
+        if(size <= current.size && current.used == false) return true;
+        next(r);
+    }
+    return false;
+}
+
+// Searches for a given index of a variable in the heap
+bool searchIndex(ring *r, int index){
+    start(r);
+    item current;
+    while(end(r) != true){
+        current = get(r);
+        if(current.index == index && current.used == true) return true;
+        next(r);
     }
     return false;
 }
@@ -30,28 +78,42 @@ bool searchGap(ring *r, int size){
 // Runs operation to allocate/free space in heap
 // operation 0 = allocate space
 // operation 1 = free space
-// Size only applicable if allocating, set to -1 if freeing
+// Size doesn't matter if freeing space - can be set to -1
 void runOperation(ring *r, int operation, int index, int size){
     if(operation == 0){
         if(searchGap(r, size) == true) allocSpace(r, size, index);
         else printf("Error: Ran out of memory\n" );
     }
     else if(operation == 1){
-        //TODO: Define search and freeSpace.
-        if(search(r, index) == true) freeSpace(r, index);
+        if(searchIndex(r, index) == true) freeSpace(r);
     }
 }
 
-int main(){
+void printRing(ring *r){
+    start(r);
+    item x;
+    while(end(r) != true){
+        x = get(r);
+        printf("%d %d %s\n", x.index, x.size, x.used ? "true" : "false");
+        next(r);
+    }
+}
+
+//TODO: Some function that will interpret a call
+
+int main(int argc, char *argv[]){
     ring *heap = newRing();
     // newHeap = {first index, size of heap, space not allocated so false}
-    item newHeap = {-1 , 128, false};
+    item newHeap = {-1 , 1024, false};
     addItem(heap, newHeap);
-    start(heap);
-    allocSpace(heap, 10, 0);
-    start(heap);
-    printf("%d %d %d\n", get(heap).index, get(heap).size, get(heap).used);
-    next(heap);
-    printf("%d %d %d\n", get(heap).index, get(heap).size, get(heap).used);
+    // Example test below, still need function that will interprets a call
+    runOperation(heap, 0, 0, 128);
+    runOperation(heap, 0, 1, 256);
+    runOperation(heap, 0, 2, 64);
+    printRing(heap);
+    printf("----\n");
+    runOperation(heap, 1, 1, -1);
+    runOperation(heap, 1, 2, -1);
+    printRing(heap);
     return 0;
 }

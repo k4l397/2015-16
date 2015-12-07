@@ -29,5 +29,8 @@ void start(ring *r);
 // Moves the current pointer to the next item in the ring.
 void next(ring *r);
 
+// Moves the current pointer to the previous item in the ring.
+void prev(ring *r);
+
 // Test if the current pointer is pointing to end of the ring.
 bool end(ring *r);

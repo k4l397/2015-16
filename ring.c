@@ -68,6 +68,10 @@ void next(ring *r){
     r->current = r->current->next;
 }
 
+void prev(ring *r){
+    r->current = r->current->prev;
+}
+
 bool end(ring *r){
     if(r->current == r->sentinel) return true;
     return false;
