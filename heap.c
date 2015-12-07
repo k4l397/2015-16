@@ -117,6 +117,7 @@ int main(int argc, char *argv[]){
     item newHeap = {-1 , 1024, false};
     addItem(heap, newHeap);
     // Example test below, still need function that will interprets a call
+    // runOperation(ring, operation code, index of variable, size of variable)
     runOperation(heap, 0, 0, 128);
     runOperation(heap, 0, 1, 256);
     runOperation(heap, 0, 2, 64);
